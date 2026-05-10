@@ -1,0 +1,43 @@
+﻿@model SchoolManagmentSystem.Models.Grade
+
+@{
+    ViewData["Title"] = "Grade Details";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h4>Grade Details</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <tr>
+                            <th>Student</th>
+                            <td>@Model.Student?.FullName</td>
+                        </tr>
+                        <tr>
+                            <th>Subject</th>
+                            <td>@Model.Subject?.Name</td>
+                        </tr>
+                        <tr>
+                            <th>Mark</th>
+                            <td>@Model.Mark</td>
+                        </tr>
+                        <tr>
+                            <th>Term</th>
+                            <td>@Model.Term</td>
+                        </tr>
+                    </table>
+
+                    <div class="d-flex gap-2 mt-3">
+                        <a asp-action="Edit" asp-route-id="@Model.Id"
+                           class="btn btn-warning">Edit</a>
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

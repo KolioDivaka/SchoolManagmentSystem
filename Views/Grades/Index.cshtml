@@ -1,0 +1,52 @@
+﻿@model IEnumerable<SchoolManagmentSystem.Models.Grade>
+
+@{
+    ViewData["Title"] = "Grades";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Grades</h2>
+        <a asp-action="Create" class="btn btn-primary">+ Add Grade</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">No grades found.</div>
+    }
+    else
+    {
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Student</th>
+                    <th>Subject</th>
+                    <th>Mark</th>
+                    <th>Term</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var grade in Model)
+                {
+                    <tr>
+                        <td>@grade.Id</td>
+                        <td>@grade.Student?.FullName</td>
+                        <td>@grade.Subject?.Name</td>
+                        <td>@grade.Mark</td>
+                        <td>@grade.Term</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@grade.Id"
+                               class="btn btn-sm btn-info">Details</a>
+                            <a asp-action="Edit" asp-route-id="@grade.Id"
+                               class="btn btn-sm btn-warning">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@grade.Id"
+                               class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

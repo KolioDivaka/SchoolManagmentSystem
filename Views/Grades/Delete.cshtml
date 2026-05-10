@@ -1,0 +1,49 @@
+﻿@model SchoolManagmentSystem.Models.Grade
+
+@{
+    ViewData["Title"] = "Delete Grade";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4>Delete Grade</h4>
+                </div>
+                <div class="card-body">
+                    <p>Are you sure you want to delete this grade?</p>
+
+                    <table class="table mt-3">
+                        <tr>
+                            <th>Student</th>
+                            <td>@Model.Student?.FullName</td>
+                        </tr>
+                        <tr>
+                            <th>Subject</th>
+                            <td>@Model.Subject?.Name</td>
+                        </tr>
+                        <tr>
+                            <th>Mark</th>
+                            <td>@Model.Mark</td>
+                        </tr>
+                        <tr>
+                            <th>Term</th>
+                            <td>@Model.Term</td>
+                        </tr>
+                    </table>
+
+                    <form asp-action="Delete" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="d-flex gap-2 mt-3">
+                            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -29,13 +29,11 @@ namespace SchoolManagmentSystem.Controllers
         public IActionResult Index()
         {
             if (User.IsInRole("Admin"))
-            {
                 return RedirectToAction(nameof(Admin));
-            }
+
             if (User.IsInRole("Student"))
-            {
                 return RedirectToAction(nameof(Student));
-            }
+
             return RedirectToAction("Login", "Account");
         }
 
@@ -46,10 +44,10 @@ namespace SchoolManagmentSystem.Controllers
             var totalGrades = await _gradeService.GetAllAsync();
             var totalSubjects = await _subjectService.GetAllAsync();
 
-            ViewBag.TotalStudents = totalStudents.Count;
-                ViewBag.TotalGrades = totalGrades.Count;
-                ViewBag.TotalSubjects = totalSubjects.Count;
-            
+            ViewBag.StudentCount = totalStudents.Count;
+            ViewBag.GradeCount = totalGrades.Count;
+            ViewBag.SubjectCount = totalSubjects.Count;
+
             return View();
         }
 
@@ -57,14 +55,14 @@ namespace SchoolManagmentSystem.Controllers
         public async Task<IActionResult> Student()
         {
             var user = await _userManager.GetUserAsync(User);
-            if(user!=null) 
+            if (user == null) 
                 return RedirectToAction("Login", "Account");
 
             var student = await _studentService.GetByUserIdAsync(user.Id);
-            if (student!=null)
+            if (student == null) 
                 return NotFound();
-            return View(student);
 
+            return View(student);
         }
     }
 }
