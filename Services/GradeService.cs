@@ -15,11 +15,14 @@ namespace SchoolManagmentSystem.Services
       public async Task<Grade?> GetByIdAsync(int id)
             => await _db.Grades
                 .Include(g => g.Student)
+                .Include(g => g.Subject)
+                 
                 .FirstOrDefaultAsync(g => g.Id == id);
 
         public async Task<List<Grade>> GetAllAsync()
             => await _db.Grades
                 .Include(g => g.Student)
+                 .Include(g => g.Subject)
                 .ToListAsync();
         public async Task<List<Grade>> GetByStudentIdAsync(int studentId)
         => await _db.Grades

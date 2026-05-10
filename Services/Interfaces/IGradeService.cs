@@ -9,6 +9,6 @@ namespace SchoolManagmentSystem.Services.Interfaces
         Task AddAsync(Grade grade);
         Task UpdateAsync(Grade grade);
         Task DeleteAsync(int id);
-        Task<Grade> GetByIdAsync(int id);
+        Task<Grade?> GetByIdAsync(int id);
     }
 }

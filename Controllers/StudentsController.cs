@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Validation;
 using SchoolManagmentSystem.Models;
 using SchoolManagmentSystem.Services.Interfaces;
+using SchoolManagmentSystem.ViewModels;
 
 
 namespace SchoolManagmentSystem.Controllers
@@ -51,7 +52,15 @@ namespace SchoolManagmentSystem.Controllers
             {
                 return NotFound();
             }
-            return View(student);
+
+            var vm = new StudentViewModel
+            {
+                Id = student.Id,
+                FullName = student.FullName,
+                DateOfBirth = student.DateOfBirth,
+                Email = student.Email
+            };
+            return View(vm);
 
         }
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagmentSystem.Models;
 using SchoolManagmentSystem.Services.Interfaces;
+using SchoolManagmentSystem.ViewModels;
 
 namespace SchoolManagmentSystem.Controllers
 {
@@ -50,7 +51,12 @@ namespace SchoolManagmentSystem.Controllers
                 return NotFound();
             }
 
-            return View(subject);
+            var vm = new SubjectViewModel
+            {
+                Name = subject.Name
+            };
+
+            return View(vm);
         }
 
         [HttpPost]
