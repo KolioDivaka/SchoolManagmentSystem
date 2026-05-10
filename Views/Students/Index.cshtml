@@ -23,17 +23,22 @@
                     <th>Full Name</th>
                     <th>Email</th>
                     <th>Date of Birth</th>
+                    <th>Student Number</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
+                @{
+                    int index = 1;
+                }
                 @foreach (var student in Model)
                 {
                     <tr>
-                        <td>@student.Id</td>
+                        <td>@(index++)</td>
                         <td>@student.FullName</td>
                         <td>@student.Email</td>
                         <td>@student.DateOfBirth</td>
+                        <td>@student.StudentNumber</td>
                         <td>
                             <a asp-action="Details" asp-route-id="@student.Id"
                                class="btn btn-sm btn-info">Details</a>
@@ -44,7 +49,6 @@
                         </td>
                     </tr>
                 }
-            </tbody>
         </table>
     }
 </div>

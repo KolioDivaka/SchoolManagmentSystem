@@ -72,6 +72,12 @@ namespace SchoolManagmentSystem.Controllers
 
             if(result.Succeeded)
             {
+                var user = await _userManager.FindByNameAsync(model.Email);
+                if(user != null && user.MustChangePassword)
+                {
+                    return RedirectToAction("ChangePassword", "Account");
+                }
+
                 return RedirectToAction("Index", "Dashboard");
             }
             
@@ -85,6 +91,39 @@ namespace SchoolManagmentSystem.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account");
+        }
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel vm)
+        {
+            if (!ModelState.IsValid)
+                return View(vm);
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return RedirectToAction("Login", "Account");
+
+            var result = await _userManager.ChangePasswordAsync(user, vm.CurrentPassword, vm.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError(string.Empty, error.Description);
+
+                return View(vm);
+            }
+
+            user.MustChangePassword = false;
+            await _userManager.UpdateAsync(user);
+
+            await _signInManager.RefreshSignInAsync(user);
+
+            return RedirectToAction("Index", "Dashboard");
         }
     }
 }

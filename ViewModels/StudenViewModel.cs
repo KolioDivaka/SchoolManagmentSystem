@@ -5,6 +5,8 @@ namespace SchoolManagmentSystem.ViewModels
     public class StudentViewModel
     {
         public int Id { get; set; }
+        
+        public string? StudentNumber { get; set; }
 
         [Required(ErrorMessage = "Full name is required.")]
         public string FullName { get; set; } = string.Empty;

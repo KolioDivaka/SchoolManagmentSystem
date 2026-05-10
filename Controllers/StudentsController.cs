@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Validation;
 using SchoolManagmentSystem.Models;
@@ -12,10 +13,12 @@ namespace SchoolManagmentSystem.Controllers
     public class StudentsController : Controller
     {
         private readonly IStudentService _studentService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public StudentsController(IStudentService studentService)
+        public StudentsController(IStudentService studentService, UserManager<ApplicationUser> userManager)
         {
             _studentService = studentService;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -28,18 +31,54 @@ namespace SchoolManagmentSystem.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            return View(new StudentViewModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Student student)
+        public async Task<IActionResult> Create(StudentViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(student);
+                return View(model);
             }
+
+            var student = new Student
+            {
+                FullName = model.FullName,
+                Email = model.Email,
+                DateOfBirth = model.DateOfBirth
+            };
+
+            var user = new ApplicationUser
+            {
+                UserName = student.Email,
+                Email = student.Email,
+                MustChangePassword = true
+            };
+
+            var tempPassword = "Student!123";
+
+            var result = await _userManager.CreateAsync(user, tempPassword);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+                return View(model);
+            }
+
+            await _userManager.AddToRoleAsync(user, "Student");
+            student.ApplicationUserId = user.Id;
+
             await _studentService.CreateAsync(student);
+
+            TempData["StudentUsername"] = student.StudentNumber;
+            TempData["StudentPassword"] = tempPassword;
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -107,6 +146,7 @@ namespace SchoolManagmentSystem.Controllers
             {
                 return NotFound();
             }
+
             return View(student);
         }
     }

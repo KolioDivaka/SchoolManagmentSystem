@@ -7,8 +7,7 @@
         public string FullName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public DateTime DateOfBirth { get; set; }
-        public string? Class { get; set;}
-        public string? Address { get; set; }
+     
 
         //Foreign key to ApplicationUser
         public string? ApplicationUserId { get; set; }

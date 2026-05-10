@@ -12,9 +12,6 @@ namespace SchoolManagmentSystem.Services
         {
             _db = db;
         }
-
-        
-
         public async Task<List<Student>> GetAllStudentsAsync()
             => await _db.Students
             .Include(s => s.Grades)
@@ -39,6 +36,11 @@ namespace SchoolManagmentSystem.Services
 
             _db.Students.Add(student);
             await _db.SaveChangesAsync();
+
+            var yearPart = DateTime.UtcNow.Year % 100;
+            student.StudentNumber = $"{yearPart:D2}{student.Id:D3}";
+
+            await _db.SaveChangesAsync();   
         }
 
         public async Task DeleteAsync(int id)
